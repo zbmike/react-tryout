@@ -3,6 +3,8 @@ import ReactDOM from 'react-dom';
 import './index.css';
 
 class Square extends React.Component {
+
+  // render in each component
   render() {
     return (
       <button 
@@ -23,12 +25,15 @@ class Board extends React.Component {
     };
   }
 
+  // functions used in render()
+  // called when clicked
   handleClick(i) {
     const squares = this.state.squares.slice();
     squares[i] = 'X';
     this.setState({squares: squares});
   }
 
+  // renders each square
   renderSquare(i) {
     return (
       <Square
@@ -38,6 +43,7 @@ class Board extends React.Component {
     );
   }
 
+  // render in each component
   render() {
     const status = 'Next player: X';
 
@@ -65,6 +71,8 @@ class Board extends React.Component {
 }
 
 class Game extends React.Component {
+
+  // render in each component
   render() {
     return (
       <div className="game">
