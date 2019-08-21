@@ -3,21 +3,28 @@ import ReactDOM from 'react-dom';
 import './index.css';
 
 // square become a function component so no 'render' 
+// takes props as input and returns what should be rendered
 function Square(props) {
 
   // instead of 'render', it 'returns' object as functions do
+  // #return() a button
   return (
+    // 
     <button className="square" onClick={props.onClick}>
       {props.value}
     </button>
   );
 }
 
+//
 class Board extends React.Component {
   constructor(props) {
     super(props);
+    // so actually 'state' is an object
+    // has 'squares' and 'xIsNext'
     this.state = {
-      squares: Array(9).fill(null),
+      squares: Array(9).fill(null),      
+      xIsNext: true,
     };
   }
 
@@ -26,9 +33,13 @@ class Board extends React.Component {
   handleClick(i) {
     // use slice to create a copy of squares array
     const squares = this.state.squares.slice();
-    squares[i] = 'X';
+    squares[i] = this.state.xIsNext ? 'X' : 'O';
     // set 'squares' of 'Board' to be the new array
-    this.setState({squares: squares});
+
+    this.setState({
+      squares: squares,
+      xIsNext: !this.state.xIsNext,
+    });
   }
 
   // renders each square
@@ -46,6 +57,7 @@ class Board extends React.Component {
     const status = 'Next player: X';
 
     return (
+      // curly braces mean 'status' is the const above not string
       <div>
         <div className="status">{status}</div>
         <div className="board-row">
