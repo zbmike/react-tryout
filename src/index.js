@@ -33,6 +33,13 @@ class Board extends React.Component {
   handleClick(i) {
     // use slice to create a copy of squares array
     const squares = this.state.squares.slice();
+
+    // return condition to ignore clicks on clicked squares or
+    // there is already a winner
+    if (calculateWinner(squares) || squares[i]) {
+      return;
+    }
+
     squares[i] = this.state.xIsNext ? 'X' : 'O';
     // set 'squares' of 'Board' to be the new array
 
@@ -54,7 +61,15 @@ class Board extends React.Component {
 
   // render in each component
   render() {
-    const status = 'Next player: X';
+    // const is for immutability
+    const winner = calculateWinner(this.state.squares);
+    // status is directly changed so use 'let'
+    let status;
+    if (winner) {
+      status = 'Winner: ' + winner;
+    } else {
+      status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
+    }
 
     return (
       // curly braces mean 'status' is the const above not string
@@ -104,3 +119,27 @@ ReactDOM.render(
   <Game />,
   document.getElementById('root')
 );
+
+// logic
+function calculateWinner(squares) {
+  const lines = [
+    [0, 1, 2],
+    [3, 4, 5],
+    [6, 7, 8],
+    [0, 3, 6],
+    [1, 4, 7],
+    [2, 5, 8],
+    [0, 4, 8],
+    [2, 4, 6],
+  ];
+  // for loop to test each line defined above
+  for (let i = 0; i < lines.length; i++) {
+    // get square numbers to a,b,c
+    const [a, b, c] = lines[i];
+    // === is strict equality, if the line has all same sign it declares a winner
+    if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
+      return squares[a];
+    }
+  }
+  return null;
+}
